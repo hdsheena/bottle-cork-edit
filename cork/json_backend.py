@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover
 
 from .base_backend import BackendIOException
 
-is_py3 = (sys.version_info.major == 3)
+is_py3 = (sys.version_info[0] == 3)
 
 log = getLogger(__name__)
 

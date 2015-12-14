@@ -11,6 +11,7 @@ from beaker.middleware import SessionMiddleware
 from cork import Cork
 from cork.backends import MongoDBBackend
 import logging
+import socket
 
 logging.basicConfig(format='localhost - - [%(asctime)s] %(message)s', level=logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ bottle.debug(True)
 
 def populate_mongodb_backend():
     mb = MongoDBBackend(db_name='cork-example', initialize=True)
+    """
     mb.users._coll.insert({
         "login": "admin",
         "email_addr": "admin@localhost.local",
@@ -30,6 +32,7 @@ def populate_mongodb_backend():
     mb.roles._coll.insert({'role': 'admin', 'val': 100})
     mb.roles._coll.insert({'role': 'editor', 'val': 60})
     mb.roles._coll.insert({'role': 'user', 'val': 50})
+    """
     return mb
 
 mb = populate_mongodb_backend()
@@ -208,6 +211,8 @@ def sorry_page():
 def main():
 
     # Start the Bottle webapp
+
+
     bottle.debug(True)
     bottle.run(app=app, quiet=False, reloader=True)
 

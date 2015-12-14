@@ -13,7 +13,7 @@ from logging import getLogger
 from . import base_backend
 
 log = getLogger(__name__)
-is_py3 = (sys.version_info.major == 3)
+is_py3 = (sys.version_info[0] == 3)
 
 try:
     from sqlalchemy import create_engine, delete, select, \
@@ -132,7 +132,7 @@ class SqlSingleValueTable(SqlTable):
 class SqlAlchemyBackend(base_backend.Backend):
 
     def __init__(self, db_full_url, users_tname='users', roles_tname='roles',
-            pending_reg_tname='register', initialize=False, **kwargs):
+            pending_reg_tname='register', initialize=False):
 
         if not sqlalchemy_available:
             raise RuntimeError("The SQLAlchemy library is not available.")
@@ -144,7 +144,7 @@ class SqlAlchemyBackend(base_backend.Backend):
             if is_py3 and db_url.startswith('mysql'):
                 print("WARNING: MySQL is not supported under Python3")
 
-            self._engine = create_engine(db_url, encoding='utf-8', **kwargs)
+            self._engine = create_engine(db_url, encoding='utf-8')
             try:
                 self._engine.execute("CREATE DATABASE %s" % db_name)
             except Exception as e:
@@ -155,7 +155,7 @@ class SqlAlchemyBackend(base_backend.Backend):
                 self._engine.execute("USE %s" % db_name)
 
         else:
-            self._engine = create_engine(db_full_url, encoding='utf-8', **kwargs)
+            self._engine = create_engine(db_full_url, encoding='utf-8')
 
 
         self._users = Table(users_tname, self._metadata,
